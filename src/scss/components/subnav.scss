@@ -117,26 +117,36 @@ $subnav-item-disabled-color:                     $global-muted-color !default;
  ========================================================================== */
 
 /*
- * 1. Align items and divider vertically
+ * Set gutter 
+ */
+
+.uk-subnav-divider { margin-left: -(($subnav-divider-margin-horizontal * 2) + $subnav-divider-border-width); }
+
+/*
+ * Align items and divider vertically
  */
 
 .uk-subnav-divider > * {
-    /* 1 */
     display: flex;
     align-items: center;
 }
 
 /*
  * Divider
- * `nth-child` makes it also work without JS if it's only one row
+ * 1. `nth-child` makes it also work without JS if it's only one row
  */
 
-.uk-subnav-divider > :nth-child(n+2):not(.uk-first-column)::before {
+.uk-subnav-divider > ::before {
     content: "";
     height: $subnav-divider-border-height;
     margin-left: ($subnav-divider-margin-horizontal - $subnav-margin-horizontal);
     margin-right: $subnav-divider-margin-horizontal;
-    border-left: $subnav-divider-border-width solid $subnav-divider-border;
+    border-left: $subnav-divider-border-width solid transparent;
+}
+
+/* 1 */
+.uk-subnav-divider > :nth-child(n+2):not(.uk-first-column)::before {
+    border-left-color: $subnav-divider-border;
     @if(mixin-exists(hook-subnav-divider)) {@include hook-subnav-divider();}
 }
 
@@ -219,7 +229,72 @@ $inverse-subnav-pill-item-active-background:    $inverse-global-primary-backgrou
 $inverse-subnav-pill-item-active-color:         $inverse-global-inverse-color !default;
 $inverse-subnav-item-disabled-color:            $inverse-global-muted-color !default;
 
+@mixin hook-inverse-component-subnav(){
 
+    .uk-subnav > * > :first-child {
+        color: $inverse-subnav-item-color;
+        @if(mixin-exists(hook-inverse-subnav-item)) {@include hook-inverse-subnav-item();}
+    }
+
+    .uk-subnav > * > a:hover,
+    .uk-subnav > * > a:focus {
+        color: $inverse-subnav-item-hover-color;
+        @if(mixin-exists(hook-inverse-subnav-item-hover)) {@include hook-inverse-subnav-item-hover();}
+    }
+
+    .uk-subnav > .uk-active > a {
+        color: $inverse-subnav-item-active-color;
+        @if(mixin-exists(hook-inverse-subnav-item-active)) {@include hook-inverse-subnav-item-active();}
+    }
+
+    //
+    // Divider
+    //
+
+    .uk-subnav-divider > :nth-child(n+2):not(.uk-first-column)::before {
+        border-left-color: $inverse-subnav-divider-border;
+        @if(mixin-exists(hook-inverse-subnav-divider)) {@include hook-inverse-subnav-divider();}
+    }
+
+    //
+    // Pill
+    //
+
+    .uk-subnav-pill > * > :first-child {
+        background-color: $inverse-subnav-pill-item-background;
+        color: $inverse-subnav-pill-item-color;
+        @if(mixin-exists(hook-inverse-subnav-pill-item)) {@include hook-inverse-subnav-pill-item();}
+    }
+
+    .uk-subnav-pill > * > a:hover,
+    .uk-subnav-pill > * > a:focus {
+        background-color: $inverse-subnav-pill-item-hover-background;
+        color: $inverse-subnav-pill-item-hover-color;
+        @if(mixin-exists(hook-inverse-subnav-pill-item-hover)) {@include hook-inverse-subnav-pill-item-hover();}
+    }
+
+    .uk-subnav-pill > * > a:active {
+        background-color: $inverse-subnav-pill-item-onclick-background;
+        color: $inverse-subnav-pill-item-onclick-color;
+        @if(mixin-exists(hook-inverse-subnav-pill-item-onclick)) {@include hook-inverse-subnav-pill-item-onclick();}
+    }
+
+    .uk-subnav-pill > .uk-active > a {
+        background-color: $inverse-subnav-pill-item-active-background;
+        color: $inverse-subnav-pill-item-active-color;
+        @if(mixin-exists(hook-inverse-subnav-pill-item-active)) {@include hook-inverse-subnav-pill-item-active();}
+    }
+
+    //
+    // Disabled
+    //
+
+    .uk-subnav > .uk-disabled > a {
+        color: $inverse-subnav-item-disabled-color;
+        @if(mixin-exists(hook-inverse-subnav-item-disabled)) {@include hook-inverse-subnav-item-disabled();}
+    }
+
+}
 
 // @mixin hook-inverse-subnav-item(){}
 // @mixin hook-inverse-subnav-item-hover(){}
